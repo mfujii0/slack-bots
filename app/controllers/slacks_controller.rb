@@ -9,13 +9,14 @@ class SlacksController < ApplicationController
   end
 
   def tsurai
-    text = "`#{params[:user_name]}` さんが `#{params[:text]}時に挙げる札` を挙げました。"
+    image = generate_tsurai_image(params[:text])
+    text = "`#{params[:user_name]}` さんが `#{params[:text]}` を挙げました。"
     json = {
       text: text,
       response_type: 'in_channel',
       attachments: [
         {
-          image_url: view_context.image_url('/slack/tsurai/images/tsurai.jpg', only_path: false)
+          image_url: request.base_url + '/' + image
         }
       ]
     }.to_json
@@ -37,5 +38,32 @@ class SlacksController < ApplicationController
     post.body = json
     post["Content-Type"] = "application/json"
     https.request(post)
+  end
+
+  ORIGINAL_FILE = Rails.root + 'app/assets/images/tsurai.jpg'
+  def generate_tsurai_image(message)
+    message_len = message.length
+    message = message.chars.join("\n")
+    file_name = "#{SecureRandom.hex}.jpg"
+    file_path = "public/slack/tsurai/images/#{file_name}"
+
+    image = Magick::Image.read(ORIGINAL_FILE)[0]
+    characters = Magick::Image.new(image.columns, image.rows) { self.background_color = 'none' }
+
+    draw = Magick::Draw.new # 描画オブジェクト
+
+    draw.annotate(characters, 0, 0, 104, 0, message) do
+      self.font = ENV['SLACK_TSURAI_FONT_FILE'] # フォント
+      self.fill = 'black' # フォント塗りつぶし色
+      self.stroke = 'transparent' # フォント縁取り色
+      self.pointsize = [36, 288.0 / message_len].min # フォントサイズ
+      self.gravity = Magick::NorthWestGravity # 描画基準位置
+    end
+    characters.rotate!(-12)
+
+    image.composite!(characters, Magick::CenterGravity, Magick::OverCompositeOp)
+
+    image.write(file_path)
+    "slack/tsurai/images/#{file_name}"
   end
 end
