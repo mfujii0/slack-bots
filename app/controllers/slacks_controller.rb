@@ -24,7 +24,8 @@ class SlacksController < ApplicationController
     post_json(params[:response_url], json)
 
     log = {
-      text: "`#{params[:user_name]}` さんが `#{params[:channel_name]}` で `#{params[:text]}` を挙げました。",
+      text: "`#{params[:user_name]}` さんが ##{params[:channel_name]} で `#{params[:text]}` を挙げました。",
+      channel: %w(directmessage privategroup).include?(params[:channel_name]) ? '#tsurai-private-log' : '#tsurai-log',
       attachments: [
         {
           image_url: image_url
