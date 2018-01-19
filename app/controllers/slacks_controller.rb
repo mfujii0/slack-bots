@@ -11,19 +11,30 @@ class SlacksController < ApplicationController
   def tsurai
     image = generate_tsurai_image(params[:text])
     text = "`#{params[:user_name]}` さんが `#{params[:text]}` を挙げました。"
+    image_url = request.base_url + '/' + image
     json = {
       text: text,
       response_type: 'in_channel',
       attachments: [
         {
-          image_url: request.base_url + '/' + image
+          image_url: image_url
         }
       ]
     }.to_json
+    post_json(params[:response_url], json)
+
+    log = {
+      text: "`#{params[:user_name]}` さんが `#{params[:channel_name]}` で `#{params[:text]}` を挙げました。",
+      attachments: [
+        {
+          image_url: image_url
+        }
+      ]
+    }.to_json
+    post_json(ENV['SLACK_TSURAI_LOG_URL'], log)
 
     # TODO
     # 画像加工が3秒制限に収まらなければ success だけ先に返すようにする
-    post_json(params[:response_url], json)
     head :ok
   end
 
@@ -67,3 +78,4 @@ class SlacksController < ApplicationController
     "slack/tsurai/images/#{file_name}"
   end
 end
+
