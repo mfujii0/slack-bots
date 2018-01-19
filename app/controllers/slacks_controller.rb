@@ -53,6 +53,7 @@ class SlacksController < ApplicationController
 
   ORIGINAL_FILE = Rails.root + 'app/assets/images/tsurai.jpg'
   def generate_tsurai_image(message)
+    message = 'つらい時に挙げる札' if message.blank?
     message_len = message.length
     message = message.chars.join("\n")
     file_name = "#{SecureRandom.hex}.jpg"
