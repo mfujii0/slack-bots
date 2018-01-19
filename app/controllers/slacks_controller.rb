@@ -14,6 +14,7 @@ class SlacksController < ApplicationController
     image_url = request.base_url + '/' + image
     json = {
       text: text,
+      link_names: 1,
       response_type: 'in_channel',
       attachments: [
         {
@@ -26,6 +27,7 @@ class SlacksController < ApplicationController
     log = {
       text: "`#{params[:user_name]}` さんが ##{params[:channel_name]} で `#{params[:text]}` を挙げました。",
       channel: %w(directmessage privategroup).include?(params[:channel_name]) ? '#tsurai-private-log' : '#tsurai-log',
+      link_names: 1,
       attachments: [
         {
           image_url: image_url
