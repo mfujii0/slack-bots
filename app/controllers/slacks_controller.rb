@@ -41,6 +41,24 @@ class SlacksController < ApplicationController
     head :ok
   end
 
+  def yoki
+    json = {
+      text: "`#{params[:text].presence || '良き。'}` by `#{params[:user_name]}`",
+      link_names: 1,
+      response_type: 'in_channel',
+    }.to_json
+    post_json(params[:response_url], json)
+
+    log = {
+      text: "`#{params[:text].presence || '良き。'}` by `#{params[:user_name]}` in ##{params[:channel_name]}",
+      channel: %w(directmessage privategroup).include?(params[:channel_name]) ? '#yoki-private-log' : '#yoki-log',
+      link_names: 1,
+    }.to_json
+    post_json(ENV['SLACK_YOKI_LOG_URL'], log)
+
+    head :ok
+  end
+
   private
 
   def post_json(url, json)
