@@ -9,8 +9,9 @@ class SlacksController < ApplicationController
   end
 
   def xian
+    text = %w(:xian: :xian: xian :xian-x::xian-i::xian-a::xian-n:).sample
     render plain: {
-      text: ":xian:",
+      text: text,
       response_type: 'in_channel'
     }.to_json, content_type: 'application/json'
   end
