@@ -8,6 +8,13 @@ class SlacksController < ApplicationController
     }.to_json, content_type: 'application/json'
   end
 
+  def xian
+    render plain: {
+      text: ":xian:",
+      response_type: 'in_channel'
+    }.to_json, content_type: 'application/json'
+  end
+
   def tsurai
     image = generate_tsurai_image(params[:text])
     text = "`#{params[:user_name]}` さんが `#{params[:text]}` を挙げました。"
