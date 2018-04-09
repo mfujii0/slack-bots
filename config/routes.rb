@@ -3,5 +3,6 @@ Rails.application.routes.draw do
     post :sudden_death
     post :tsurai
     post :yoki
+    post :xian
   end
 end
