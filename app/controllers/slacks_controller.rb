@@ -31,11 +31,11 @@ class SlacksController < ApplicationController
     if options[:u]
       original_file = Rails.root + 'app/assets/images/ureshii.png'
       default_message = 'うれしい時に挙げる札'
-      font = ENV['SLACK_URESHII_FONT_FILE']
+      font = Rails.configuration.x.font_file.ureshii
     else
       original_file = Rails.root + 'app/assets/images/tsurai.jpg'
       default_message = 'つらい時に挙げる札'
-      font = ENV['SLACK_TSURAI_FONT_FILE']
+      font = Rails.configuration.x.font_file.tsurai
     end
 
     image = generate_tsurai_image(message, original_file, default_message, font)

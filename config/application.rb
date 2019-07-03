@@ -14,5 +14,8 @@ module SuddenDeath
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
+
+    config.x.font_file.tsurai = ENV.fetch('SLACK_TSURAI_FONT_FILE', Rails.root + 'lib/assets/fonts/ipamjm.ttf')
+    config.x.font_file.ureshii = ENV.fetch('SLACK_URESHII_FONT_FILE', Rails.root + 'lib/assets/fonts/ipamp.ttf')
   end
 end
