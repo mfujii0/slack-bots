@@ -53,6 +53,8 @@ class SlacksController < ApplicationController
     }.to_json
     post_json(params[:response_url], json)
 
+    return head(:ok) unless ENV['SLACK_TSURAI_LOG_URL']
+
     log = {
       text: "`#{params[:user_name]}` さんが ##{params[:channel_name]} で `#{message}` を挙げました。",
       channel: %w(directmessage privategroup).include?(params[:channel_name]) ? '#tsurai-private-log' : '#tsurai-log',
@@ -77,6 +79,8 @@ class SlacksController < ApplicationController
       response_type: 'in_channel',
     }.to_json
     post_json(params[:response_url], json)
+
+    return head(:ok) unless ENV['SLACK_YOKI_LOG_URL']
 
     log = {
       text: "`#{params[:text].presence || '良き。'}` by `#{params[:user_name]}` in ##{params[:channel_name]}",
