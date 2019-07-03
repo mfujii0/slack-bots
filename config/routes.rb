@@ -5,5 +5,4 @@ Rails.application.routes.draw do
     post :yoki
     post :xian
   end
-  post :primitive_language, to: 'primitive_language#translate'
 end
