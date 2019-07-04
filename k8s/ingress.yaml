@@ -1,0 +1,11 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: sudden-death
+  name: sudden-death-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "sudden-death-ip"
+spec:
+  backend:
+    serviceName: rails
+    servicePort: 80
