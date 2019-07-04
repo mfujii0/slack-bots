@@ -44,6 +44,7 @@ class SlacksController < ApplicationController
     json = {
       text: text,
       link_names: 1,
+      unfurl_links: 1,
       response_type: 'in_channel',
       attachments: [
         {
@@ -59,6 +60,7 @@ class SlacksController < ApplicationController
       text: "`#{params[:user_name]}` さんが ##{params[:channel_name]} で `#{message}` を挙げました。",
       channel: %w(directmessage privategroup).include?(params[:channel_name]) ? '#tsurai-private-log' : '#tsurai-log',
       link_names: 1,
+      unfurl_links: 1,
       attachments: [
         {
           image_url: image_url
@@ -76,6 +78,7 @@ class SlacksController < ApplicationController
     json = {
       text: "`#{params[:text].presence || '良き。'}` by `#{params[:user_name]}`",
       link_names: 1,
+      unfurl_links: 1,
       response_type: 'in_channel',
     }.to_json
     post_json(params[:response_url], json)
@@ -86,6 +89,7 @@ class SlacksController < ApplicationController
       text: "`#{params[:text].presence || '良き。'}` by `#{params[:user_name]}` in ##{params[:channel_name]}",
       channel: %w(directmessage privategroup).include?(params[:channel_name]) ? '#yoki-private-log' : '#yoki-log',
       link_names: 1,
+      unfurl_links: 1,
     }.to_json
     post_json(ENV['SLACK_YOKI_LOG_URL'], log)
 
