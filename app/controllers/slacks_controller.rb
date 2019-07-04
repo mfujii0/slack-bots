@@ -2,15 +2,17 @@ class SlacksController < ApplicationController
   protect_from_forgery except: [:sudden_death]
 
   def sudden_death
-    text = (params[:text].presence || '突然の死').sudden_death
+    text = "```#{(params[:text].presence || '突然の死').sudden_death}```"
+    send_log("`#{params[:user_name]}` さんが ##{params[:channel_name]} で突然の死を使いました。\n#{text}")
     render plain: {
-      text: "```#{text}```",
+      text: text,
       response_type: 'in_channel'
     }.to_json, content_type: 'application/json'
   end
 
   def xian
     text = %w(:xian: :xian: xian :xian-x::xian-i::xian-a::xian-n:).sample
+    send_log("`#{params[:user_name]}` さんが ##{params[:channel_name]} で `/xian` を使いました。\n#{text}")
     render plain: {
       text: text,
       response_type: 'in_channel'
