@@ -2,12 +2,26 @@ class SlacksController < ApplicationController
   protect_from_forgery except: [:sudden_death]
 
   def sudden_death
-    text = "```#{(params[:text].presence || '突然の死').sudden_death}```"
+    secret = false
+    message = ''
+    OptionParser.new do |opt|
+      opt.on('--secret') { secret = true }
+      message = opt.parse(params[:text].split).join
+    end
+
+    text = "```#{(message.presence || '突然の死').sudden_death}```"
     send_log("`#{params[:user_name]}` さんが ##{params[:channel_name]} で突然の死を使いました。\n#{text}")
-    render plain: {
+
+    response = {
       text: text,
       response_type: 'in_channel'
-    }.to_json, content_type: 'application/json'
+    }.to_json
+
+    if secret
+      post_json(params[:response_url], response)
+    else
+      render plain: response, content_type: 'application/json'
+    end
   end
 
   def xian
@@ -21,11 +35,11 @@ class SlacksController < ApplicationController
 
   def tsurai
     options = {}
+    message = ''
     OptionParser.new do |opt|
       opt.on('-u') { options[:u] = true }
-      opt.parse(params[:text].split)
+      message = opt.parse(params[:text].split).join
     end
-    message = params[:text].gsub(/(^|\s+)\-u($|\s+)/, '')
 
     original_file = ''
     default_message = ''
