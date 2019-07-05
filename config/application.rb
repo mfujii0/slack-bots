@@ -16,6 +16,6 @@ module SuddenDeath
     # -- all .rb files in that directory are automatically loaded.
 
     config.x.font_file.tsurai = ENV.fetch('SLACK_TSURAI_FONT_FILE', Rails.root + 'lib/assets/fonts/ipamjm.ttf').to_s
-    config.x.font_file.ureshii = ENV.fetch('SLACK_URESHII_FONT_FILE', Rails.root + 'lib/assets/fonts/ipamp.ttf').to_s
+    config.x.font_file.ureshii = ENV.fetch('SLACK_URESHII_FONT_FILE', Rails.root + 'lib/assets/fonts/mitimasu.ttf').to_s
   end
 end
