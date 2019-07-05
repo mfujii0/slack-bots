@@ -6,7 +6,7 @@ metadata:
   labels:
     app: rails
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: rails
   ports:
@@ -14,3 +14,4 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 80
+  # loadBalancerIP: input static ip
