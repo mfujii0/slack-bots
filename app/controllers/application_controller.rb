@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
     https.request(post)
   end
 
-  def send_log(message, log_channel_name = '#sudden-death-log')
+  def send_log(message, log_channel_name = ENV['SLACK_LOG_CHANNEL'])
     return unless ENV['SLACK_WEBHOOK']
     message = { text: message } unless message.is_a?(Hash)
     message.reverse_merge!(

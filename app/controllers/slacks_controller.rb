@@ -74,7 +74,7 @@ class SlacksController < ApplicationController
 
     log = {
       text: "`#{params[:user_name]}` さんが ##{params[:channel_name]} で `#{message}` を挙げました。",
-      channel: %w(directmessage privategroup).include?(params[:channel_name]) ? '#tsurai-private-log' : '#tsurai-log',
+      channel: %w(directmessage privategroup).include?(params[:channel_name]) ? ENV['SLACK_LOG_GROUP'] : ENV['SLACK_LOG_CHANNEL'],
       link_names: 1,
       unfurl_links: 1,
       attachments: [
@@ -103,7 +103,7 @@ class SlacksController < ApplicationController
 
     log = {
       text: "`#{params[:text].presence || '良き。'}` by `#{params[:user_name]}` in ##{params[:channel_name]}",
-      channel: %w(directmessage privategroup).include?(params[:channel_name]) ? '#yoki-private-log' : '#yoki-log',
+      channel: %w(directmessage privategroup).include?(params[:channel_name]) ? ENV['SLACK_LOG_GROUP'] : ENV['SLACK_LOG_CHANNEL'],
       link_names: 1,
       unfurl_links: 1,
     }.to_json
